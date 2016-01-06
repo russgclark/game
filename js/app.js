@@ -13,7 +13,6 @@ var Enemy = function(startX, startY) {
 
 // Resets Enemy speed, and position - used upon "win" and "collision" cases
 Enemy.prototype.reset = function () {
-    var speed = Math.floor((Math.random() * 300) + 50);
     this.x = Math.floor(Math.random() * (-600)) - 100;
 };
 
@@ -71,16 +70,17 @@ Player.prototype.reset = function () {
     this.y = 300;
 };
 
+// Displays "win" prompt upon reaching water, resets both Player and Enemy positions
+Player.prototype.win = function () {
+    alert("You Win!");
+    this.reset();
+    allEnemies.forEach(function(enemy) { enemy.reset(); });
+};
+
 Player.prototype.update = function(dt){
-  // Displays "win" prompt upon reaching water, resets both Player and Enemy positions
-    function win(){
-      alert("You Win!");
-      player.reset();
-      allEnemies.forEach(function(enemy) { enemy.reset(); });
-    }
     // Triggers "win" upon reaching water
     if ( this.y == -20 ){
-      win();
+      this.win();
      }
 };
 
@@ -90,7 +90,7 @@ Player.prototype.render = function() {
 };
 
 // Handles arrow-based keyboard input for Player control, && checks to see if Player has reached board boundary
-player.handleInput = function(direction){
+Player.prototype.handleInput = function(direction){
     if (direction == 'up' && this.y > 0) {
       this.y = this.y - 80;
     }
